@@ -1,0 +1,22 @@
+name: CI Pipeline
+
+# Déclenchement à chaque fois qu'on pousse sur la branche main
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            # 1. Récupérer le code dans la VM GitHub
+            - name: Checkout du code
+              uses: actions/checkout@v4
+
+            # 2. Vérifier que l'image Docker se build sans planter
+            - name: Build de l'image Docker
+              run: |
+                  docker build -t test-api:${{ github.sha }} .
